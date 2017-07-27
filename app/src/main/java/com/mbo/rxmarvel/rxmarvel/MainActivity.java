@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements CharactersFragmen
 
         characterListViewModel = new CharacterListViewModel(true);
 
-        characterDisposable = MarvelProvider.getSpiderCharacterObservable().subscribe(new Consumer<List<CharacterViewModel>>() {
+        characterDisposable = MarvelProvider.INSTANCE.getSpiderCharacterObservable().subscribe(new Consumer<List<CharacterViewModel>>() {
             @Override
             public void accept(List<CharacterViewModel> characters) throws Exception {
                 // Results
