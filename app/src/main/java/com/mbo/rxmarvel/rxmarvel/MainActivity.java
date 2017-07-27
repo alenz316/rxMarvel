@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.mbo.rxmarvel.rxmarvel.characters.CharacterListViewModel;
@@ -38,16 +37,17 @@ public class MainActivity extends AppCompatActivity implements CharactersFragmen
 
         characterListViewModel = new CharacterListViewModel(true);
 
-
         characterDisposable = MarvelProvider.getSpiderCharacterObservable().subscribe(new Consumer<List<CharacterViewModel>>() {
             @Override
             public void accept(List<CharacterViewModel> characters) throws Exception {
+                // Results
                 characterListViewModel.characters.addAll(characters);
                 characterListViewModel.loading.set(false);
             }
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
+                // Error handling
                 Toast.makeText(MainActivity.this, "Error: " + throwable, Toast.LENGTH_SHORT).show();
             }
         });
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements CharactersFragmen
     protected void onPause() {
         super.onPause();
         if (characterDisposable != null && (isFinishing() || isChangingConfigurations())) {
+            // Unsubscribe this activity if it is going away
             characterDisposable.dispose();
         }
     }
